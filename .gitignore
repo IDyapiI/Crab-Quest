@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+*.vsix
+*.log
+# local Claude Code config for this checkout (dev preview, permissions)
+.claude/
+data/

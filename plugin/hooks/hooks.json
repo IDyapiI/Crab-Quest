@@ -1,0 +1,178 @@
+{
+  "description": "Streams Claude Code activity to the Crab Quest game server.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PermissionDenied": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -m 2 -X POST -H 'Content-Type: application/json' --data-binary @- \"${CRAB_QUEST_URL:-http://localhost:7777}/hook\" >/dev/null 2>&1 || true # crab-quest",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

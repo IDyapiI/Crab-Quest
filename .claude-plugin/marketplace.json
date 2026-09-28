@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "crab-quest",
+  "description": "Crab Quest hooks plugin",
+  "owner": {
+    "name": "Mael"
+  },
+  "plugins": [
+    {
+      "name": "crab-quest",
+      "description": "Streams Claude Code activity to the Crab Quest game server.",
+      "source": "./plugin",
+      "category": "productivity"
+    }
+  ]
+}

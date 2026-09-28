@@ -1,0 +1,14 @@
+{
+  "name": "crab-quest",
+  "displayName": "Crab Quest",
+  "version": "2.0.0",
+  "description": "Watch Claude Code play a retro RPG: every tool call is a quest in the village.",
+  "author": {
+    "name": "Mael"
+  },
+  "keywords": [
+    "visualization",
+    "hooks",
+    "game"
+  ]
+}

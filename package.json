@@ -1,0 +1,33 @@
+{
+  "name": "crab-quest",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A retro RPG that plays out your Claude Code sessions",
+  "license": "MIT",
+  "author": "Mael Alle",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IDyapiI/Crab-Quest.git"
+  },
+  "homepage": "https://github.com/IDyapiI/Crab-Quest#readme",
+  "keywords": [
+    "claude-code",
+    "hooks",
+    "pixel-art",
+    "game",
+    "visualization"
+  ],
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "setup": "node scripts/setup.js",
+    "uninstall-hooks": "node scripts/setup.js --uninstall"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "ws": "^8.18.0"
+  }
+}

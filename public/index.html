@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crab Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- TITLE SCREEN -->
+  <section id="title-screen" class="screen-view" hidden>
+    <div class="title-art">
+      <canvas id="title-hero" width="96" height="96" aria-hidden="true"></canvas>
+      <h1 class="logo"><span>CRAB</span><span>QUEST</span></h1>
+      <p class="tagline">Every tool call is an adventure</p>
+    </div>
+
+    <div class="win profile-card" id="title-profile" hidden>
+      <canvas id="title-avatar" width="48" height="48" aria-hidden="true"></canvas>
+      <div class="pc-main">
+        <div class="pc-name"><span id="pc-name">CLAWD</span> <span class="lvl" id="pc-level">LV.1</span></div>
+        <div class="bar xp"><i id="pc-xp"></i></div>
+      </div>
+      <div class="pc-side"><span class="gold-inline"><span class="coin"></span><span id="pc-gold">0</span></span><small id="pc-ach"></small></div>
+    </div>
+
+    <div class="win slots">
+      <h2 class="win-title">CHOOSE YOUR SAVE</h2>
+      <ol id="slot-list" class="slot-list"></ol>
+      <p id="slot-empty" class="slot-empty" hidden>
+        No adventurers yet.<br>Start a Claude Code session to begin.
+      </p>
+    </div>
+
+    <div class="title-actions">
+      <button class="btn" id="btn-grid" type="button">&#9638; WATCH ALL</button>
+      <button class="btn ghost" data-open="profile" type="button">P · PROFILE</button>
+      <button class="btn ghost" data-open="stats" type="button">G · STATS</button>
+      <button class="btn ghost" data-guide type="button">V · VILLAGE GUIDE</button>
+      <button class="btn ghost" id="btn-help" type="button">? HOW TO PLAY</button>
+    </div>
+    <p class="press-start">&#9660; SELECT A SLOT &#9660;</p>
+
+    <dialog id="help" class="win">
+      <h2 class="win-title">HOW TO PLAY</h2>
+      <ol class="help-list">
+        <li><kbd>npm run setup</kbd> installs the hooks and status line (or install the <b>crab-quest</b> plugin).</li>
+        <li>Keep <kbd>npm start</kbd> running, then use Claude Code as usual.</li>
+        <li>Clawd walks to a villager for every tool call. Sub-agents are the little ones.</li>
+        <li>The weather follows the context window: rain, snow, then storm.</li>
+        <li>Every tool call earns XP. Spend gold in the shop; new decorations appear as you level up.</li>
+      </ol>
+      <p class="keys"><kbd>S</kbd> shop &nbsp; <kbd>Q</kbd> journal &nbsp; <kbd>P</kbd> profile &nbsp; <kbd>G</kbd> stats &nbsp; <kbd>V</kbd> village guide<br><kbd>E</kbd> home &nbsp; <kbd>F</kbd> fish (<kbd>Space</kbd> to reel) &nbsp; <kbd>I</kbd> picture-in-picture &nbsp; <kbd>C</kbd> CRT filter &nbsp; <kbd>D</kbd> debug &nbsp; <kbd>Esc</kbd> back</p>
+      <form method="dialog"><button class="btn">OK</button></form>
+    </dialog>
+  </section>
+
+  <!-- SINGLE SESSION -->
+  <section id="game-view" class="screen-view" hidden>
+    <header class="topbar">
+      <button class="btn small ghost" id="btn-back" type="button">&#9664; SAVES</button>
+      <div class="topbar-title">
+        <span class="project" id="hud-project">—</span>
+        <span class="session-title" id="hud-title">Connecting…</span>
+      </div>
+      <button class="btn small ghost" id="btn-pip" type="button" title="Picture-in-Picture (I)">⧉ PIP</button>
+      <button class="btn small ghost" id="btn-notify" type="button" title="Desktop notifications">🔔 OFF</button>
+      <span class="status-pill" id="hud-status">OFFLINE</span>
+    </header>
+
+    <main class="stage">
+      <div class="crt" id="crt">
+        <canvas id="world"></canvas>
+      </div>
+
+      <aside class="hud">
+        <section class="win">
+          <div class="hero-row">
+            <canvas id="hud-hero" width="48" height="48" aria-hidden="true"></canvas>
+            <div class="hero-meta">
+              <div class="hero-name"><span id="hud-name">CLAWD</span> <span class="lvl" id="hud-level">LV.1</span></div>
+              <div class="hero-title" id="hud-title-line"></div>
+              <div class="muted" id="hud-model">—</div>
+            </div>
+          </div>
+          <div class="bar-label"><span>XP</span><span id="hud-xp-text">0 / 5</span></div>
+          <div class="bar xp"><i id="hud-xp"></i></div>
+          <div class="hero-gold"><span class="gold-inline"><span class="coin"></span><span id="hud-gold">0</span> G</span><span class="daily-mini" id="hud-daily"></span><span id="hud-effects"></span></div>
+          <div class="bar-label"><span>CONTEXT <span id="hud-weather">&#9728;</span></span><span id="hud-ctx-text">0%</span></div>
+          <div class="bar ctx"><i id="hud-ctx"></i></div>
+          <div id="hud-limits"></div>
+        </section>
+
+        <div class="hud-actions">
+          <button class="btn small" id="btn-shop" type="button">S · SHOP</button>
+          <button class="btn small ghost" data-open="journal" type="button">Q · JOURNAL</button>
+          <button class="btn small ghost" data-open="profile" type="button">P · PROFILE</button>
+          <button class="btn small ghost" data-open="stats" type="button">G · STATS</button>
+          <button class="btn small ghost" data-key="e" type="button">E · HOME</button>
+          <button class="btn small ghost" data-key="f" type="button">F · FISH</button>
+          <button class="btn small ghost" data-guide type="button">V · GUIDE</button>
+        </div>
+
+        <section class="win purse">
+          <h2 class="win-title">SESSION <small id="hud-cost-note"></small></h2>
+          <div class="gold"><span id="hud-cost">$0.00</span></div>
+          <dl class="tokens" id="hud-tokens"></dl>
+        </section>
+
+        <section class="win" id="quest-win">
+          <h2 class="win-title">QUEST LOG <small id="hud-quest-count"></small></h2>
+          <ul class="quests" id="hud-quests"><li class="muted">No quests yet…</li></ul>
+        </section>
+
+        <section class="win">
+          <h2 class="win-title">BAG</h2>
+          <ul class="bag" id="hud-bag"></ul>
+        </section>
+
+        <section class="win">
+          <h2 class="win-title">JOURNAL</h2>
+          <ol class="log" id="hud-log"></ol>
+        </section>
+      </aside>
+    </main>
+
+    <dialog id="shop" class="win shop">
+      <header class="shop-head">
+        <h2 class="win-title">SHOP <small class="shop-count"></small></h2>
+        <span class="gold-inline"><span class="coin"></span><span class="shop-gold">0 G</span></span>
+        <form method="dialog"><button class="btn small ghost" aria-label="Close">✕</button></form>
+      </header>
+      <nav class="shop-tabs"></nav>
+      <div class="shop-body">
+        <ul class="shop-list"></ul>
+        <div class="shop-detail"></div>
+      </div>
+      <p class="shop-hint muted">↑↓ choose · Tab category · Enter confirm · Esc close</p>
+    </dialog>
+
+    <div class="debug win" id="debug" hidden>
+      <h2 class="win-title">DEBUG <small>D to close</small></h2>
+      <div class="debug-grid" id="debug-buttons"></div>
+    </div>
+  </section>
+
+  <!-- VILLAGE GUIDE -->
+  <section id="guide-view" class="screen-view parchment" hidden>
+    <header class="topbar">
+      <button class="btn small ghost" id="btn-guide-back" type="button">&#9664; BACK</button>
+      <div class="topbar-title"><span class="session-title">VILLAGE GUIDE</span></div>
+    </header>
+    <main class="guide" id="guide"></main>
+  </section>
+
+  <!-- ALL SESSIONS -->
+  <section id="grid-view" class="screen-view" hidden>
+    <header class="topbar">
+      <button class="btn small ghost" id="btn-grid-back" type="button">&#9664; SAVES</button>
+      <div class="topbar-title"><span class="session-title">ALL ADVENTURERS</span></div>
+      <span class="status-pill" id="grid-status">OFFLINE</span>
+    </header>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <div id="perm" class="win perm" role="alertdialog" aria-labelledby="perm-title" hidden>
+    <h2 class="win-title" id="perm-title">CLAUDE ASKS PERMISSION</h2>
+    <p class="perm-tool"><b id="perm-tool"></b> <span class="muted" id="perm-cwd"></span></p>
+    <pre id="perm-detail"></pre>
+    <div class="bar mini"><i id="perm-timer"></i></div>
+    <div class="actions">
+      <button class="btn allow" type="button" data-decide="allow">✓ ALLOW</button>
+      <button class="btn deny" type="button" data-decide="deny">✕ DENY</button>
+    </div>
+    <p class="muted perm-note">No answer? The usual prompt appears in your terminal.</p>
+  </div>
+
+  <dialog id="villager" class="win panel villager-dialog parchment">
+    <header class="panel-head"><h2 class="win-title">VILLAGER</h2><form method="dialog"><button class="btn small ghost" aria-label="Close">✕</button></form></header>
+    <div class="panel-body"></div>
+  </dialog>
+
+  <dialog id="journal" class="win panel">
+    <header class="panel-head"><h2 class="win-title">JOURNAL</h2><form method="dialog"><button class="btn small ghost" aria-label="Close">✕</button></form></header>
+    <nav class="panel-tabs"></nav><div class="panel-body"></div>
+  </dialog>
+  <dialog id="profile" class="win panel">
+    <header class="panel-head"><h2 class="win-title">PROFILE</h2><form method="dialog"><button class="btn small ghost" aria-label="Close">✕</button></form></header>
+    <div class="panel-body"></div>
+  </dialog>
+  <dialog id="stats" class="win panel wide">
+    <header class="panel-head"><h2 class="win-title">STATISTICS</h2><form method="dialog"><button class="btn small ghost" aria-label="Close">✕</button></form></header>
+    <nav class="panel-tabs"></nav><div class="panel-body"></div>
+  </dialog>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
